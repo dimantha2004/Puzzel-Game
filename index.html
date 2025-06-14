@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Match-3 Puzzle Game</title>
+  </head>
+  <body>
+    <div id="app">
+      <div class="game-container">
+        <div class="game-header">
+          <h1>Match-3 Puzzle</h1>
+          <div class="game-stats">
+            <div class="score-display">
+              <span class="label">Score:</span>
+              <span id="score">0</span>
+            </div>
+            <div class="combo-display">
+              <span class="label">Combo:</span>
+              <span id="combo">x1</span>
+            </div>
+            <div class="moves-display">
+              <span class="label">Moves:</span>
+              <span id="moves">30</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="game-board">
+          <canvas id="gameCanvas" width="480" height="480"></canvas>
+        </div>
+        
+        <div class="game-controls">
+          <button id="newGameBtn" class="btn btn-primary">New Game</button>
+          <button id="hintBtn" class="btn btn-secondary">Hint</button>
+        </div>
+        
+        <div id="gameOverModal" class="modal hidden">
+          <div class="modal-content">
+            <h2>Game Over!</h2>
+            <p>Final Score: <span id="finalScore">0</span></p>
+            <button id="playAgainBtn" class="btn btn-primary">Play Again</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
