@@ -3,7 +3,7 @@ export class SoundManager {
     this.audioContext = null;
     this.enabled = true;
     
-    // Initialize Web Audio API
+    
     this.initAudio();
   }
   
@@ -19,15 +19,15 @@ export class SoundManager {
   playMatch(comboMultiplier = 1) {
     if (!this.enabled || !this.audioContext) return;
     
-    // Create a pleasant match sound with higher pitch for combos
-    const frequency = 440 + (comboMultiplier - 1) * 110; // A4 + combo bonus
+    
+    const frequency = 440 + (comboMultiplier - 1) * 110; 
     this.playTone(frequency, 0.2, 'sine');
   }
   
   playInvalidMove() {
     if (!this.enabled || !this.audioContext) return;
     
-    // Create a lower, less pleasant sound for invalid moves
+    
     this.playTone(200, 0.3, 'sawtooth');
   }
   
@@ -43,7 +43,7 @@ export class SoundManager {
     oscillator.frequency.setValueAtTime(frequency, this.audioContext.currentTime);
     oscillator.type = waveType;
     
-    // Envelope for smooth sound
+    
     gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
     gainNode.gain.linearRampToValueAtTime(0.1, this.audioContext.currentTime + 0.01);
     gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + duration);
