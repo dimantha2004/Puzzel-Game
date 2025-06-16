@@ -7,27 +7,27 @@ export class Renderer {
     this.hintTiles = [];
     this.hintStartTime = 0;
     
-    // Tile colors - accessibility-friendly palette
+    
     this.tileColors = [
-      '#FF6B6B', // Red
-      '#4ECDC4', // Teal
-      '#45B7D1', // Blue
-      '#96CEB4', // Green
-      '#FFEAA7', // Yellow
-      '#DDA0DD'  // Purple
+      '#FF6B6B', 
+      '#4ECDC4', 
+      '#45B7D1', 
+      '#96CEB4', 
+      '#FFEAA7', 
+      '#DDA0DD'  
     ];
     
-    // Animation properties
+    
     this.animations = [];
   }
   
   render(grid) {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     
-    // Draw grid background
+    
     this.drawGridBackground();
     
-    // Draw tiles
+    
     for (let row = 0; row < grid.length; row++) {
       for (let col = 0; col < grid[row].length; col++) {
         if (grid[row][col] !== null) {
@@ -36,15 +36,15 @@ export class Renderer {
       }
     }
     
-    // Draw selection highlight
+    
     if (this.selectedRow !== null && this.selectedCol !== null) {
       this.drawSelection(this.selectedRow, this.selectedCol);
     }
     
-    // Draw hint highlight
+    
     this.drawHints();
     
-    // Update animations
+    
     this.updateAnimations();
   }
   
@@ -52,7 +52,7 @@ export class Renderer {
     this.ctx.fillStyle = '#f0f0f0';
     this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     
-    // Draw grid lines
+    
     this.ctx.strokeStyle = '#ddd';
     this.ctx.lineWidth = 1;
     
@@ -61,13 +61,13 @@ export class Renderer {
     for (let i = 0; i <= gridSize; i++) {
       const pos = i * this.tileSize;
       
-      // Vertical lines
+      
       this.ctx.beginPath();
       this.ctx.moveTo(pos, 0);
       this.ctx.lineTo(pos, this.ctx.canvas.height);
       this.ctx.stroke();
       
-      // Horizontal lines
+      
       this.ctx.beginPath();
       this.ctx.moveTo(0, pos);
       this.ctx.lineTo(this.ctx.canvas.width, pos);
@@ -80,20 +80,20 @@ export class Renderer {
     const y = row * this.tileSize;
     const padding = 2;
     
-    // Draw tile background
+    
     this.ctx.fillStyle = this.tileColors[tileType];
     this.ctx.fillRect(x + padding, y + padding, this.tileSize - padding * 2, this.tileSize - padding * 2);
     
-    // Draw tile border for depth
+    
     this.ctx.strokeStyle = this.darkenColor(this.tileColors[tileType], 0.2);
     this.ctx.lineWidth = 2;
     this.ctx.strokeRect(x + padding, y + padding, this.tileSize - padding * 2, this.tileSize - padding * 2);
     
-    // Draw inner highlight for 3D effect
+    
     this.ctx.fillStyle = this.lightenColor(this.tileColors[tileType], 0.3);
     this.ctx.fillRect(x + padding + 2, y + padding + 2, this.tileSize - padding * 2 - 4, 8);
     
-    // Draw tile symbol/number
+    
     this.ctx.fillStyle = '#333';
     this.ctx.font = 'bold 24px Arial';
     this.ctx.textAlign = 'center';
@@ -113,7 +113,7 @@ export class Renderer {
     this.ctx.lineWidth = 4;
     this.ctx.strokeRect(x + 2, y + 2, this.tileSize - 4, this.tileSize - 4);
     
-    // Add pulsing effect
+    
     const time = Date.now() * 0.005;
     const alpha = 0.3 + 0.2 * Math.sin(time);
     this.ctx.fillStyle = `rgba(255, 215, 0, ${alpha})`;
@@ -185,7 +185,7 @@ export class Renderer {
         const elapsed = Date.now() - startTime;
         const progress = Math.min(elapsed / duration, 1);
         
-        // Draw all tiles normally first
+        
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
         this.drawGridBackground();
         
@@ -195,7 +195,7 @@ export class Renderer {
               const isMatched = matches.some(m => m.row === row && m.col === col);
               
               if (isMatched) {
-                // Animate matched tiles (scale down and fade)
+                
                 const scale = 1 - progress;
                 const alpha = 1 - progress;
                 
@@ -245,7 +245,7 @@ export class Renderer {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
         this.drawGridBackground();
         
-        // Draw static tiles
+        
         for (let row = 0; row < grid.length; row++) {
           for (let col = 0; col < grid[row].length; col++) {
             if (grid[row][col] !== null) {
@@ -257,7 +257,7 @@ export class Renderer {
           }
         }
         
-        // Draw dropping tiles
+        
         drops.forEach(drop => {
           const startY = drop.fromRow * this.tileSize;
           const endY = drop.toRow * this.tileSize;
@@ -266,7 +266,7 @@ export class Renderer {
           const x = drop.col * this.tileSize;
           const padding = 2;
           
-          // Draw tile at interpolated position
+          
           this.ctx.fillStyle = this.tileColors[drop.tileType];
           this.ctx.fillRect(x + padding, currentY + padding, this.tileSize - padding * 2, this.tileSize - padding * 2);
           
@@ -301,7 +301,7 @@ export class Renderer {
   }
   
   showInvalidMove(row1, col1, row2, col2) {
-    // Add shake animation to both tiles
+    
     const tiles = [
       { row: row1, col: col1 },
       { row: row2, col: col2 }
@@ -316,7 +316,7 @@ export class Renderer {
       
       if (progress >= 1) return;
       
-      // Simple shake effect
+      
       const shakeAmount = 5 * (1 - progress);
       const shakeX = (Math.random() - 0.5) * shakeAmount;
       const shakeY = (Math.random() - 0.5) * shakeAmount;
@@ -324,7 +324,7 @@ export class Renderer {
       this.ctx.save();
       this.ctx.translate(shakeX, shakeY);
       
-      // Redraw affected tiles with red tint
+      
       tiles.forEach(({ row, col }) => {
         const x = col * this.tileSize;
         const y = row * this.tileSize;
@@ -352,7 +352,7 @@ export class Renderer {
     });
   }
   
-  // Utility functions
+  
   darkenColor(color, amount) {
     const hex = color.replace('#', '');
     const r = Math.max(0, parseInt(hex.substr(0, 2), 16) * (1 - amount));
