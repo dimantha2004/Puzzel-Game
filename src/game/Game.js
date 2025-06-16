@@ -9,33 +9,33 @@ export class Game {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
     
-    // Game configuration
+    
     this.config = {
       gridSize: 8,
       tileSize: 60,
       tileTypes: 6,
       initialMoves: 30,
-      comboTimeWindow: 2000 // 2 seconds
+      comboTimeWindow: 2000 
     };
     
-    // Initialize game components
+    
     this.board = new Board(this.config.gridSize, this.config.tileTypes);
     this.renderer = new Renderer(this.ctx, this.config.tileSize);
     this.inputHandler = new InputHandler(canvas, this.config.tileSize);
     this.scoreManager = new ScoreManager();
     this.soundManager = new SoundManager();
     
-    // Game state
-    this.gameState = 'playing'; // 'playing', 'gameOver'
+    
+    this.gameState = 'playing'; 
     this.movesLeft = this.config.initialMoves;
     this.selectedTile = null;
     this.animating = false;
     this.lastMatchTime = 0;
     
-    // Bind event handlers
+    
     this.setupEventHandlers();
     
-    // Start game loop
+    
     this.gameLoop();
   }
   
@@ -49,21 +49,21 @@ export class Game {
   
   handleTileClick(row, col) {
     if (!this.selectedTile) {
-      // Select first tile
+      
       this.selectedTile = { row, col };
       this.renderer.setSelectedTile(row, col);
     } else {
       const { row: selectedRow, col: selectedCol } = this.selectedTile;
       
       if (row === selectedRow && col === selectedCol) {
-        // Deselect if clicking the same tile
+        
         this.selectedTile = null;
         this.renderer.setSelectedTile(null, null);
       } else if (this.isAdjacent(selectedRow, selectedCol, row, col)) {
-        // Try to swap adjacent tiles
+        
         this.attemptSwap(selectedRow, selectedCol, row, col);
       } else {
-        // Select new tile
+        
         this.selectedTile = { row, col };
         this.renderer.setSelectedTile(row, col);
       }
@@ -77,38 +77,38 @@ export class Game {
   }
   
   async attemptSwap(row1, col1, row2, col2) {
-    // Temporarily swap tiles to check for matches
+    
     this.board.swapTiles(row1, col1, row2, col2);
     
     const matches = this.board.findMatches();
     
     if (matches.length > 0) {
-      // Valid swap - proceed with animation and clearing
+      
       this.animating = true;
       this.selectedTile = null;
       this.renderer.setSelectedTile(null, null);
       
-      // Animate swap
+      
       await this.renderer.animateSwap(row1, col1, row2, col2, this.board.grid);
       
-      // Decrease moves
+      
       this.movesLeft--;
       this.updateUI();
       
-      // Process matches
+      
       await this.processMatches();
       
       this.animating = false;
       
-      // Check for game over
+      
       this.checkGameOver();
     } else {
-      // Invalid swap - revert and show feedback
-      this.board.swapTiles(row1, col1, row2, col2); // Swap back
+      
+      this.board.swapTiles(row1, col1, row2, col2); 
       this.selectedTile = null;
       this.renderer.setSelectedTile(null, null);
       
-      // Show invalid move animation
+      
       this.renderer.showInvalidMove(row1, col1, row2, col2);
       this.soundManager.playInvalidMove();
     }
@@ -122,7 +122,7 @@ export class Game {
       const matches = this.board.findMatches();
       if (matches.length === 0) break;
       
-      // Check for combo
+      
       const currentTime = Date.now();
       if (currentTime - this.lastMatchTime < this.config.comboTimeWindow && totalMatches > 0) {
         comboMultiplier++;
@@ -133,28 +133,28 @@ export class Game {
       this.lastMatchTime = currentTime;
       totalMatches += matches.length;
       
-      // Calculate score
+      
       const baseScore = matches.length * 10;
       const comboScore = baseScore * comboMultiplier;
       this.scoreManager.addScore(comboScore);
       this.scoreManager.setComboMultiplier(comboMultiplier);
       
-      // Animate clearing matches
+      
       await this.renderer.animateMatches(matches, this.board.grid);
       
-      // Clear matches
+      
       this.board.clearMatches(matches);
       
-      // Drop tiles and fill empty spaces
+      
       const drops = this.board.dropTiles();
       await this.renderer.animateDrops(drops, this.board.grid);
       
       this.board.fillEmptySpaces();
       
-      // Play sound
+      
       this.soundManager.playMatch(comboMultiplier);
       
-      // Update UI
+      
       this.updateUI();
     }
   }
@@ -196,7 +196,7 @@ export class Game {
     document.getElementById('combo').textContent = `x${this.scoreManager.comboMultiplier}`;
     document.getElementById('moves').textContent = this.movesLeft;
     
-    // Add pulse animation to score when it changes
+    
     const scoreElement = document.getElementById('score');
     scoreElement.classList.add('pulse');
     setTimeout(() => scoreElement.classList.remove('pulse'), 600);
