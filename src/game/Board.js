@@ -7,7 +7,7 @@ export class Board {
   }
   
   initializeGrid() {
-    // Create initial grid without matches
+    
     do {
       this.grid = [];
       for (let row = 0; row < this.size; row++) {
@@ -32,7 +32,7 @@ export class Board {
   findMatches() {
     const matches = new Set();
     
-    // Check horizontal matches
+    
     for (let row = 0; row < this.size; row++) {
       let count = 1;
       let currentType = this.grid[row][0];
@@ -51,7 +51,7 @@ export class Board {
         }
       }
       
-      // Check end of row
+      
       if (count >= 3) {
         for (let i = this.size - count; i < this.size; i++) {
           matches.add(`${row},${i}`);
@@ -59,7 +59,7 @@ export class Board {
       }
     }
     
-    // Check vertical matches
+    
     for (let col = 0; col < this.size; col++) {
       let count = 1;
       let currentType = this.grid[0][col];
@@ -78,7 +78,7 @@ export class Board {
         }
       }
       
-      // Check end of column
+      
       if (count >= 3) {
         for (let i = this.size - count; i < this.size; i++) {
           matches.add(`${i},${col}`);
@@ -86,7 +86,7 @@ export class Board {
       }
     }
     
-    // Convert Set to array of objects
+    
     return Array.from(matches).map(match => {
       const [row, col] = match.split(',').map(Number);
       return { row, col };
@@ -136,27 +136,27 @@ export class Board {
   }
   
   hasValidMoves() {
-    // Check all possible swaps
+    
     for (let row = 0; row < this.size; row++) {
       for (let col = 0; col < this.size; col++) {
-        // Check right neighbor
+        
         if (col < this.size - 1) {
           this.swapTiles(row, col, row, col + 1);
           if (this.findMatches().length > 0) {
-            this.swapTiles(row, col, row, col + 1); // Swap back
+            this.swapTiles(row, col, row, col + 1); 
             return true;
           }
-          this.swapTiles(row, col, row, col + 1); // Swap back
+          this.swapTiles(row, col, row, col + 1); 
         }
         
-        // Check bottom neighbor
+        
         if (row < this.size - 1) {
           this.swapTiles(row, col, row + 1, col);
           if (this.findMatches().length > 0) {
-            this.swapTiles(row, col, row + 1, col); // Swap back
+            this.swapTiles(row, col, row + 1, col); 
             return true;
           }
-          this.swapTiles(row, col, row + 1, col); // Swap back
+          this.swapTiles(row, col, row + 1, col); 
         }
       }
     }
@@ -165,27 +165,27 @@ export class Board {
   }
   
   findValidMove() {
-    // Find the first valid move for hint system
+    
     for (let row = 0; row < this.size; row++) {
       for (let col = 0; col < this.size; col++) {
-        // Check right neighbor
+        
         if (col < this.size - 1) {
           this.swapTiles(row, col, row, col + 1);
           if (this.findMatches().length > 0) {
-            this.swapTiles(row, col, row, col + 1); // Swap back
+            this.swapTiles(row, col, row, col + 1); 
             return { row1: row, col1: col, row2: row, col2: col + 1 };
           }
-          this.swapTiles(row, col, row, col + 1); // Swap back
+          this.swapTiles(row, col, row, col + 1); 
         }
         
-        // Check bottom neighbor
+        
         if (row < this.size - 1) {
           this.swapTiles(row, col, row + 1, col);
           if (this.findMatches().length > 0) {
-            this.swapTiles(row, col, row + 1, col); // Swap back
+            this.swapTiles(row, col, row + 1, col); 
             return { row1: row, col1: col, row2: row + 1, col2: col };
           }
-          this.swapTiles(row, col, row + 1, col); // Swap back
+          this.swapTiles(row, col, row + 1, col); 
         }
       }
     }

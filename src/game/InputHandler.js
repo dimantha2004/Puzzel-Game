@@ -8,7 +8,7 @@ export class InputHandler {
   }
   
   setupEventListeners() {
-    // Mouse events
+    
     this.canvas.addEventListener('click', (e) => {
       const rect = this.canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
@@ -22,7 +22,7 @@ export class InputHandler {
       }
     });
     
-    // Touch events for mobile support
+    
     this.canvas.addEventListener('touchstart', (e) => {
       e.preventDefault();
       const touch = e.touches[0];
@@ -38,7 +38,7 @@ export class InputHandler {
       }
     });
     
-    // Prevent context menu on right click
+    
     this.canvas.addEventListener('contextmenu', (e) => {
       e.preventDefault();
     });
